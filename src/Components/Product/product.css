@@ -1,0 +1,14 @@
+.cartButton {
+  border-radius: 13px;
+  background-color: rgb(61, 27, 124);
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.productCard {
+  width: 18rem;
+  margin: 1rem;
+  background-color: rgb(44, 42, 42);
+  padding-top: 1em;
+  color: white;
+}

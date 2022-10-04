@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Product from "./Components/Product";
 import ProductList from "./Components/ProductList";
 
 function App() {
@@ -7,9 +6,7 @@ function App() {
 
   return (
     <div>
-      <ProductList>
-        <Product />
-      </ProductList>
+      <ProductList />
     </div>
   );
 }

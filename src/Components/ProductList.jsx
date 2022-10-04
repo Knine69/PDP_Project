@@ -1,5 +1,5 @@
 import Products from "../utils/Products";
-import Product from "./Product";
+import Product from "./Product/Product";
 import Row from "react-bootstrap/Row";
 
 const ProductList = () => {

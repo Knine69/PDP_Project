@@ -1,5 +1,6 @@
 import Card from "react-bootstrap/Card";
 import "bootstrap/dist/css/bootstrap.css";
+import "./product.css";
 
 const Product = ({
   id,
@@ -10,19 +11,19 @@ const Product = ({
   imageURL,
 }) => {
   return (
-    <Card style={{ width: "18rem", margin: "1rem" }}>
+    <Card className="productCard">
       <Card.Img variant="top" src={imageURL}></Card.Img>
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
+        <Card.Title>
+          <strong>{name}</strong>
+        </Card.Title>
         <Card.Text>
-          {description}: ${price}
+          {description}: <strong>${price}</strong>
         </Card.Text>
       </Card.Body>
-      <button style={{ marginBottom: "1rem" }}>Add To Cart</button>
+      <button className="cartButton">Add To Cart</button>
     </Card>
   );
 };
-
-const adaptProduct = () => {};
 
 export default Product;
