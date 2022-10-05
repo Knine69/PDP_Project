@@ -9,19 +9,28 @@ const Product = ({
   available_amount,
   description,
   imageURL,
+  addToCart,
 }) => {
+  const addToCartCaller = (prodID) => {
+    addToCart(prodID);
+  };
+
   return (
     <Card className="productCard">
-      <Card.Img variant="top" src={imageURL}></Card.Img>
+      <Card.Img src={imageURL}></Card.Img>
       <Card.Body>
         <Card.Title>
           <strong>{name}</strong>
         </Card.Title>
         <Card.Text>
           {description}: <strong>${price}</strong>
+          <br />
+          Available: {available_amount}
         </Card.Text>
       </Card.Body>
-      <button className="cartButton">Add To Cart</button>
+      <button className="cartButton" onClick={addToCartCaller({ id })}>
+        Add To Cart
+      </button>
     </Card>
   );
 };

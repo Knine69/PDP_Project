@@ -1,11 +1,14 @@
-import Products from "../utils/Products";
-import Product from "./Product/Product";
+import Products from "../../utils/Products";
+import Product from "../Product/Product";
 import Row from "react-bootstrap/Row";
 
-const ProductList = () => {
+const ProductList = ({ updateCartHandler }) => {
+  const addToCartHandler = (productID) => {
+    updateCartHandler(productID);
+  };
   return (
-    <div className="col-6">
-      <Row xs={1} md={2}>
+    <div className="col-9">
+      <Row xs={1} md={3}>
         {Products.map((product, index) => {
           return (
             <Product
@@ -16,6 +19,7 @@ const ProductList = () => {
               available_amount={product.available_amount}
               description={product.description}
               imageURL={product.imageURL}
+              addToCart={addToCartHandler}
             />
           );
         })}
