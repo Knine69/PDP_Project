@@ -3,9 +3,11 @@ import Product from "../Product/Product";
 import Row from "react-bootstrap/Row";
 
 const ProductList = ({ updateCartHandler }) => {
+
   const addToCartHandler = (productID) => {
     updateCartHandler(productID);
   };
+
   return (
     <div className="col-9">
       <Row xs={1} md={3}>

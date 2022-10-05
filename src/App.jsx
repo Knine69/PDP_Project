@@ -34,6 +34,8 @@ function App() {
   );
 }
 
-const updateCart = (productID) => {};
+const updateCart = (productID) => {
+  console.log(`Product ID is: ${JSON.stringify(productID)}`);
+};
 
 export default App;
