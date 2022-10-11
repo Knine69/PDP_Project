@@ -3,9 +3,8 @@ import Product from "../Product/Product";
 import Row from "react-bootstrap/Row";
 
 const ProductList = ({ updateCartHandler }) => {
-
-  const addToCartHandler = (productID) => {
-    updateCartHandler(productID);
+  const addToCartHandler = (product) => {
+    updateCartHandler(product);
   };
 
   return (

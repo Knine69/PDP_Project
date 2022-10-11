@@ -21,14 +21,16 @@ const Product = ({
     imageURL,
   });
 
-  const addToCartCaller = (prodID) => {
-    updateProductAmount();
-    addToCart(prodID);
-  };
-
-  const updateProductAmount = () => {
-    setProducts({ ...product, available_amount: product.available_amount - 1 });
-    console.log(`Updated products: ${JSON.stringify(product)}`);
+  const addToCartCaller = () => {
+    if (product.available_amount > 0) {
+      setProducts({
+        ...product,
+        available_amount: product.available_amount - 1,
+      });
+      addToCart(product);
+    } else {
+      alert(`There are currently no more units of this product`);
+    }
   };
 
   return (
@@ -44,7 +46,7 @@ const Product = ({
           Available: {product.available_amount}
         </Card.Text>
       </Card.Body>
-      <button className="cartButton" onClick={() => addToCartCaller({ id })}>
+      <button className="cartButton" onClick={() => addToCartCaller()}>
         Add To Cart
       </button>
     </Card>
