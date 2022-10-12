@@ -52,51 +52,86 @@ function App() {
       console.log("Retrieved");
       const newCart = cartProducts.filter((prod) => prod.requested !== 0);
       setCartProducts(newCart);
-    } else {
     }
     setShowShoppingCart(!showShoppingCart);
   };
 
   const updateAmountInCatalogueProducts = (product, amount) => {
-    const updatedCatalogueProduct = updateUtiltyCatalogue(product, amount);
     const updateCartProduct = updateCartProductUtility(product, amount);
-    setCatalogueProducts(updatedCatalogueProduct);
     setCartProducts(updateCartProduct);
-    console.log(`Catalogue is: ${JSON.stringify(catalogueProducts)}`);
   };
 
   const updateCartProductUtility = (product, amount) => {
     const newCartProduct = cartProducts;
     newCartProduct.map((prod) => {
       if (prod.id === product.id) {
-        prod.requested = amount;
-        prod.available_amount = prod.available_amount + amount;
+        const previousAvailable = prod.available_amount - prod.requested;
+        if (amount < previousAvailable) {
+          if (amount === 0) {
+            subsctractRequestedAndProducts(prod);
+            updateUtiltyCatalogue(prod, "A");
+          } else {
+            if (prod.requested < amount) {
+              prod.requested += 1;
+              updateUtiltyCatalogue(prod, "B");
+            } else {
+              validateRequestedGreaterThanAmount(prod, amount);
+            }
+          }
+        } else if (amount > previousAvailable) {
+          if (previousAvailable === 0) {
+            setAmountOfProducts(amountOfProducts - 1);
+            updateUtiltyCatalogue(prod, "A");
+          } else {
+            validateRequestedGreaterThanAmount(prod, amount);
+          }
+        } else {
+          validateRequestedGreaterThanAmount(prod, amount);
+        }
       }
     });
     return newCartProduct;
   };
 
-  const updateUtiltyCatalogue = (product, amount) => {
+  const validateRequestedGreaterThanAmount = (prod, amount) => {
+    if (prod.requested > amount) {
+      subsctractRequestedAndProducts(prod);
+      updateUtiltyCatalogue(prod, "A");
+    } else {
+      addRequestedAndProducts(prod);
+      updateUtiltyCatalogue(prod, "B");
+    }
+  };
+
+  const addRequestedAndProducts = (product) => {
+    product.requested += 1;
+    setAmountOfProducts(amountOfProducts + 1);
+  };
+
+  const subsctractRequestedAndProducts = (product) => {
+    product.requested -= 1;
+    setAmountOfProducts(amountOfProducts - 1);
+  };
+
+  const updateUtiltyCatalogue = (product, option) => {
     const newCatalogueProducts = catalogueProducts;
     newCatalogueProducts.map((prod) => {
       if (prod.id === product.id) {
         const previousAvailable = prod.available_amount;
-        prod.requested = amount;
-        if (amount <= previousAvailable) {
-          if (amount === 0) {
-            setAmountOfProducts(amountOfProducts - 1);
-            prod.available_amount = prod.available_amount + 1;
-          } else {
-            setAmountOfProducts(amountOfProducts - amount);
-            prod.available_amount = prod.available_amount + amount;
-          }
-        } else if (amount > previousAvailable) {
-          setAmountOfProducts(amountOfProducts + amount);
-          prod.available_amount = prod.available_amount - amount;
+        switch (option) {
+          case "A":
+            console.log("Entered A");
+            prod.available_amount += 1;
+            break;
+          case "B":
+            console.log("Entered B");
+            prod.available_amount -= 1;
+            break;
         }
+        console.log(`Prod is: ${JSON.stringify(prod)}`);
       }
     });
-    return newCatalogueProducts;
+    setCatalogueProducts(newCatalogueProducts);
   };
 
   const retrieveUpdatedCatalogue = () => {
