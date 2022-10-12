@@ -2,28 +2,34 @@ import { useState } from "react";
 import ProductList from "./Components/ProductList/ProductList";
 import "bootstrap/dist/css/bootstrap.css";
 import ShoppingCart from "./Components/ShoppingCart/ShoppingCart";
-import Summary from "./Components/Summary/Summary";
 import "./App.css";
+import Products from "./utils/Products";
 
 function App() {
+  const [catalogueProducts, setCatalogueProducts] = useState(Products);
   const [amountOfProducts, setAmountOfProducts] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
   const [showShoppingCart, setShowShoppingCart] = useState(false);
 
   const updateCart = (product) => {
     setAmountOfProducts(amountOfProducts + 1);
-    const newCartList = cartProducts;
+    updateCatalogueProducts(product);
 
+    const newCartList = cartProducts;
     if (newCartList.length > 0) {
-      newCartList.map((prod) => {
-        if (prod.id === product.id) {
-          prod.requested += 1;
-          setCartProducts(newCartList);
-        } else {
-          product.requested = 1;
-          setCartProducts([...newCartList, product]);
-        }
-      });
+      const filteredCart = newCartList.filter((prod) => prod.id === product.id);
+      console.log(filteredCart);
+      if (filteredCart.length > 0) {
+        newCartList.map((prod) => {
+          if (prod.id === product.id) {
+            prod.requested += 1;
+            setCartProducts(newCartList);
+          }
+        });
+      } else if (filteredCart.length === 0) {
+        product.requested = 1;
+        setCartProducts([...newCartList, product]);
+      }
     } else if (newCartList.length === 0) {
       product.requested = 1;
       cartProducts.push(product);
@@ -31,8 +37,88 @@ function App() {
     }
   };
 
+  const updateCatalogueProducts = (product) => {
+    const newCatalogueProduct = catalogueProducts;
+    newCatalogueProduct.map((prod) => {
+      if (prod.id === product.id) {
+        prod.available_amount = prod.available_amount - 1;
+      }
+    });
+    setCatalogueProducts(newCatalogueProduct);
+  };
+
   const toggleShopping = () => {
+    if (showShoppingCart) {
+      console.log("Retrieved");
+      const newCart = cartProducts.filter((prod) => prod.requested !== 0);
+      setCartProducts(newCart);
+    } else {
+    }
     setShowShoppingCart(!showShoppingCart);
+  };
+
+  const updateAmountInCatalogueProducts = (product, amount) => {
+    const updatedCatalogueProduct = updateUtiltyCatalogue(product, amount);
+    const updateCartProduct = updateCartProductUtility(product, amount);
+    setCatalogueProducts(updatedCatalogueProduct);
+    setCartProducts(updateCartProduct);
+    console.log(`Catalogue is: ${JSON.stringify(catalogueProducts)}`);
+  };
+
+  const updateCartProductUtility = (product, amount) => {
+    const newCartProduct = cartProducts;
+    newCartProduct.map((prod) => {
+      if (prod.id === product.id) {
+        prod.requested = amount;
+        prod.available_amount = prod.available_amount + amount;
+      }
+    });
+    return newCartProduct;
+  };
+
+  const updateUtiltyCatalogue = (product, amount) => {
+    const newCatalogueProducts = catalogueProducts;
+    newCatalogueProducts.map((prod) => {
+      if (prod.id === product.id) {
+        const previousAvailable = prod.available_amount;
+        prod.requested = amount;
+        if (amount <= previousAvailable) {
+          if (amount === 0) {
+            setAmountOfProducts(amountOfProducts - 1);
+            prod.available_amount = prod.available_amount + 1;
+          } else {
+            setAmountOfProducts(amountOfProducts - amount);
+            prod.available_amount = prod.available_amount + amount;
+          }
+        } else if (amount > previousAvailable) {
+          setAmountOfProducts(amountOfProducts + amount);
+          prod.available_amount = prod.available_amount - amount;
+        }
+      }
+    });
+    return newCatalogueProducts;
+  };
+
+  const retrieveUpdatedCatalogue = () => {
+    return (
+      <div>
+        <ProductList
+          updateCartHandler={updateCart}
+          catalogueProducts={catalogueProducts}
+        />
+      </div>
+    );
+  };
+
+  const retrieveUpdatedCart = () => {
+    return (
+      <div>
+        <ShoppingCart
+          cartProducts={cartProducts}
+          updateAmount={updateAmountInCatalogueProducts}
+        />
+      </div>
+    );
   };
 
   return (
@@ -62,18 +148,8 @@ function App() {
         </div>
       </div>
       <hr />
-      {!showShoppingCart && (
-        <div>
-          <ProductList updateCartHandler={updateCart} />
-        </div>
-      )}
-      {showShoppingCart && (
-        <div>
-          <div>
-            <ShoppingCart cartProducts={cartProducts} />
-          </div>
-        </div>
-      )}
+      {!showShoppingCart && retrieveUpdatedCatalogue()}
+      {showShoppingCart && retrieveUpdatedCart()}
     </div>
   );
 }

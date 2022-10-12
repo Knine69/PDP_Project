@@ -10,6 +10,7 @@ const RequestedProduct = ({
   description,
   imageURL,
   requested,
+  updateCatalogueAmount,
 }) => {
   const [localProduct, setLocalProduct] = useState({
     id,
@@ -31,6 +32,7 @@ const RequestedProduct = ({
     ) {
       setShowAlert(false);
       setLocalProduct({ ...localProduct, requested: e.target.valueAsNumber });
+      updateCatalogueAmount(localProduct, e.target.valueAsNumber);
     } else {
       setShowAlert(true);
     }

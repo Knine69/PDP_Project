@@ -1,8 +1,10 @@
 import Row from "react-bootstrap/Row";
 import RequestedProduct from "../RequestedProduct/RequestedProduct";
 
-const ShoppingCart = ({ cartProducts }) => {
-  console.log(cartProducts);
+const ShoppingCart = ({ cartProducts, updateAmount }) => {
+  const updateCatalogueAmount = (product, amount) => {
+    updateAmount(product, amount);
+  };
   return (
     <div className="col-12">
       <Row xs={1} md={3}>
@@ -17,6 +19,7 @@ const ShoppingCart = ({ cartProducts }) => {
               description={product.description}
               imageURL={product.imageURL}
               requested={product.requested}
+              updateCatalogueAmount={updateCatalogueAmount}
             />
           );
         })}

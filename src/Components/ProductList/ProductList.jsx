@@ -1,8 +1,7 @@
-import Products from "../../utils/Products";
 import Product from "../Product/Product";
 import Row from "react-bootstrap/Row";
 
-const ProductList = ({ updateCartHandler }) => {
+const ProductList = ({ updateCartHandler, catalogueProducts }) => {
   const addToCartHandler = (product) => {
     updateCartHandler(product);
   };
@@ -10,7 +9,7 @@ const ProductList = ({ updateCartHandler }) => {
   return (
     <div className="col-9">
       <Row xs={1} md={3}>
-        {Products.map((product, index) => {
+        {catalogueProducts.map((product, index) => {
           return (
             <Product
               key={index}
