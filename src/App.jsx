@@ -72,7 +72,7 @@ function App() {
             updateUtiltyCatalogue(prod, "A");
           } else {
             if (prod.requested < amount) {
-              prod.requested += 1;
+              addRequestedAndProducts(prod);
               updateUtiltyCatalogue(prod, "B");
             } else {
               validateRequestedGreaterThanAmount(prod, amount);
@@ -128,7 +128,6 @@ function App() {
             prod.available_amount -= 1;
             break;
         }
-        console.log(`Prod is: ${JSON.stringify(prod)}`);
       }
     });
     setCatalogueProducts(newCatalogueProducts);
