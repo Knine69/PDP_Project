@@ -18,7 +18,6 @@ function App() {
     const newCartList = cartProducts;
     if (newCartList.length > 0) {
       const filteredCart = newCartList.filter((prod) => prod.id === product.id);
-      console.log(filteredCart);
       if (filteredCart.length > 0) {
         newCartList.map((prod) => {
           if (prod.id === product.id) {
@@ -117,14 +116,11 @@ function App() {
     const newCatalogueProducts = catalogueProducts;
     newCatalogueProducts.map((prod) => {
       if (prod.id === product.id) {
-        const previousAvailable = prod.available_amount;
         switch (option) {
           case "A":
-            console.log("Entered A");
             prod.available_amount += 1;
             break;
           case "B":
-            console.log("Entered B");
             prod.available_amount -= 1;
             break;
         }

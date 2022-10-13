@@ -1,0 +1,16 @@
+.summaryContainer {
+  margin: 2em;
+  padding: 1em;
+  border: solid 1px gray;
+  border-radius: 10px;
+}
+
+.couponEdit {
+  margin-left: 1em;
+}
+
+.titleSummary {
+  background-color: darkred;
+  padding: 5px;
+  color: white;
+}
