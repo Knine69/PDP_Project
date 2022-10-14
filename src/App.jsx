@@ -57,6 +57,7 @@ function App() {
 
   const updateAmountInCatalogueProducts = (product, amount) => {
     const updateCartProduct = updateCartProductUtility(product, amount);
+    // console.log(`Current cart: ${JSON.stringify(updateCartProduct)}`);
     setCartProducts(updateCartProduct);
   };
 
@@ -87,6 +88,8 @@ function App() {
         } else {
           validateRequestedGreaterThanAmount(prod, amount);
         }
+
+        prod.requested = amount;
       }
     });
     return newCartProduct;
@@ -103,13 +106,15 @@ function App() {
   };
 
   const addRequestedAndProducts = (product) => {
-    product.requested += 1;
+    if (product.requested < product.available_amount) product.requested += 1;
     setAmountOfProducts(amountOfProducts + 1);
   };
 
   const subsctractRequestedAndProducts = (product) => {
-    product.requested -= 1;
-    setAmountOfProducts(amountOfProducts - 1);
+    if (product.requested > 0) {
+      product.requested -= 1;
+      setAmountOfProducts(amountOfProducts - 1);
+    }
   };
 
   const updateUtiltyCatalogue = (product, option) => {

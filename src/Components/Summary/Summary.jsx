@@ -9,25 +9,27 @@ const Summary = ({ cartProducts }) => {
 
   useEffect(() => {
     setCalculatedSubotal(calculateAllRequested());
+    calculateTotal();
   });
 
-  const calculateSubtotal = () => {};
-
-  const calculateTotal = () => {};
+  const calculateTotal = () => {
+    setCalculatedTotal(calculatedSubtotal - couponValue);
+  };
 
   const calculateAllRequested = () => {
     let counter = 0;
     Array.from(cartProducts).forEach((item) => {
       counter += item.requested * item.price;
     });
-    console.log(`Price is: ${counter}`);
 
     return counter;
   };
 
   const inputHandler = ({ target: { value } }) => {
-    setCouponValue(value);
-    setCalculatedSubotal(calculateAllRequested());
+    if (parseInt(value) >= 0 && parseInt(value) <= 100) {
+      setCouponValue(value);
+      setCalculatedSubotal(calculateAllRequested());
+    }
   };
 
   return (
@@ -50,7 +52,6 @@ const Summary = ({ cartProducts }) => {
       <h5>Coupon: {couponValue}</h5>
       <hr />
       <h5>
-        {" "}
         Total: <strong>{calculatedTotal}</strong>
       </h5>
     </div>
