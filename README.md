@@ -4,4 +4,4 @@
 
 # Juan José Huguet Ospina
 
-# Maria Alejandra Gallego
+# Maria Alejandra Gallego Ramirez
